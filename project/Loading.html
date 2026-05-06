@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Museo della Notte — Entering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06070d;
+    --paper:#f3ead4;
+    --paper-soft:rgba(243,234,212,0.85);
+    --paper-mute:rgba(243,234,212,0.55);
+    --gold:#d6a544;
+    --gold-bright:#f1c66a;
+    --gold-deep:#9a7224;
+    --oxblood:#9b1f24;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --display:'Cinzel', serif;
+    --mono:'DM Mono', ui-monospace, monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--ink); color:var(--paper); height:100%; overflow:hidden; font-family:var(--serif); }
+
+  .bg-video-wrap{ position:fixed; inset:0; z-index:0; overflow:hidden; background:#000; }
+  .bg-video-wrap video{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; transform:scale(1.05);
+    filter:contrast(1.05) saturate(0.85) brightness(0.42);
+  }
+  .veil{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:
+      radial-gradient(ellipse at 50% 45%, rgba(6,7,13,0.30), rgba(6,7,13,0.78) 65%, rgba(6,7,13,0.95) 100%);
+  }
+  .warm{
+    position:fixed; inset:0; z-index:1; pointer-events:none; mix-blend-mode:overlay;
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(214,165,68,0.16), transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(155,31,36,0.12), transparent 60%);
+  }
+  .grain{
+    position:fixed; inset:0; z-index:2; pointer-events:none;
+    opacity:.10; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .stage{
+    position:relative; z-index:5;
+    width:100%; height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:32px;
+  }
+
+  .frame{
+    position:relative;
+    text-align:center;
+    transform:rotate(-1deg);
+  }
+
+  .corner{
+    position:absolute; opacity:0.85;
+    color:var(--gold-bright);
+  }
+  .corner.tl{ top:-40px; left:-40px; transform:rotate(0deg); }
+  .corner.tr{ top:-40px; right:-40px; transform:scaleX(-1); }
+  .corner.bl{ bottom:-40px; left:-40px; transform:scaleY(-1); }
+  .corner.br{ bottom:-40px; right:-40px; transform:scale(-1,-1); }
+
+  .label{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.32em;
+    text-transform:uppercase; color:var(--gold-bright);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+  }
+
+  .crest{
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+    margin-bottom:36px;
+  }
+  .crest .name{
+    font-family:var(--display); font-weight:600;
+    font-size:18px; letter-spacing:0.32em;
+    color:var(--paper);
+    text-shadow:0 2px 24px rgba(0,0,0,0.85);
+  }
+  .crest .it{
+    font-family:var(--serif); font-style:italic; font-size:16px;
+    color:var(--gold-bright);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+  }
+
+  .roman{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(160px, 28vw, 360px);
+    line-height:0.86;
+    letter-spacing:0.02em;
+    background: linear-gradient(180deg, #f1c66a 0%, #d6a544 55%, #9a7224 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter:drop-shadow(0 6px 40px rgba(0,0,0,0.85)) drop-shadow(0 0 60px rgba(241,198,106,0.4));
+    margin:0; padding:0;
+    position:relative;
+  }
+  .roman::before, .roman::after{
+    content:''; position:absolute; top:50%;
+    width:clamp(60px, 14vw, 200px); height:1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .roman::before{ right:calc(100% + 24px); }
+  .roman::after{ left:calc(100% + 24px); }
+
+  .della{
+    font-family:var(--serif); font-style:italic;
+    font-size:clamp(28px, 4.5vw, 56px);
+    color:var(--gold-bright);
+    margin-top:-14px; margin-bottom:6px;
+    text-shadow:0 0 30px rgba(241,198,106,0.5), 0 2px 24px rgba(0,0,0,0.85);
+    transform:rotate(-3deg);
+  }
+
+  .invocation{
+    margin-top:36px; max-width:560px;
+    margin-left:auto; margin-right:auto;
+    font-family:var(--serif); font-style:italic;
+    font-size:clamp(18px, 2vw, 22px); line-height:1.5;
+    color:var(--paper-soft);
+    text-shadow:0 1px 18px rgba(0,0,0,0.85);
+  }
+
+  /* candle */
+  .candle-wrap{
+    margin:42px auto 0; width:60px; position:relative;
+  }
+  .stick{
+    width:14px; height:64px;
+    margin:0 auto;
+    background:linear-gradient(180deg, #f3ead4, #d6a544);
+    box-shadow:inset -3px 0 0 rgba(0,0,0,0.18), 0 0 24px rgba(241,198,106,0.2);
+    border-radius:1px;
+  }
+  .wick{
+    position:absolute; top:-6px; left:50%; width:1px; height:8px;
+    background:#1a1208; transform:translateX(-50%);
+  }
+  .flame{
+    position:absolute; top:-26px; left:50%;
+    width:14px; height:24px;
+    transform:translateX(-50%);
+    background: radial-gradient(ellipse at 50% 70%, #fff7d4 0%, #f1c66a 35%, #d6a544 65%, transparent 75%);
+    border-radius:50% 50% 50% 50% / 70% 70% 30% 30%;
+    filter:blur(0.6px);
+    animation: flicker 1.4s ease-in-out infinite;
+    transform-origin:50% 100%;
+  }
+  .glow{
+    position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+    width:240px; height:240px;
+    background: radial-gradient(circle, rgba(241,198,106,0.4) 0%, rgba(241,198,106,0.12) 30%, transparent 65%);
+    pointer-events:none;
+    animation:flicker 1.4s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%,100%{ transform:translateX(-50%) scale(1, 1) rotate(-1deg); opacity:1; }
+    25%    { transform:translateX(-50%) scale(0.96, 1.04) rotate(1.5deg); opacity:0.92; }
+    50%    { transform:translateX(-50%) scale(1.04, 0.96) rotate(-2deg); opacity:0.85; }
+    75%    { transform:translateX(-50%) scale(0.98, 1.02) rotate(1deg); opacity:0.95; }
+  }
+
+  /* progress — renaissance dotted rule */
+  .progress-wrap{
+    margin:44px auto 0; width:min(440px, 70vw);
+    text-align:center; position:relative;
+  }
+  .progress-track{
+    width:100%; height:1px;
+    background:repeating-linear-gradient(90deg, var(--gold) 0 4px, transparent 4px 10px);
+    position:relative; overflow:visible;
+  }
+  .progress-fill{
+    position:absolute; top:-1px; left:0; height:3px;
+    background:linear-gradient(90deg, var(--gold-deep), var(--gold-bright), var(--gold));
+    box-shadow:0 0 18px rgba(241,198,106,0.7);
+    width:0%; transition:width 0.4s ease;
+  }
+  .progress-fleuron{
+    position:absolute; top:50%; transform:translate(-50%, -50%);
+    transition: left 0.4s ease;
+    color:var(--gold-bright);
+    filter:drop-shadow(0 0 12px rgba(241,198,106,0.7));
+  }
+  .progress-text{
+    margin-top:22px;
+    display:flex; justify-content:space-between; align-items:baseline; gap:18px;
+  }
+  .progress-text .pct{
+    font-family:var(--display); font-weight:600;
+    font-size:14px; letter-spacing:0.2em;
+    color:var(--gold-bright);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+  }
+  .progress-text .stage-name{
+    font-family:var(--serif); font-style:italic;
+    font-size:16px; color:var(--paper-soft);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+    text-align:right; flex:1;
+  }
+
+  /* corner ornament — small SVG fleuron in each viewport corner */
+  .vp-corner{
+    position:fixed; z-index:6; opacity:0.55;
+    color:var(--gold-bright); pointer-events:none;
+  }
+  .vp-corner.tl{ top:32px; left:32px; }
+  .vp-corner.tr{ top:32px; right:32px; transform:scaleX(-1); }
+  .vp-corner.bl{ bottom:32px; left:32px; transform:scaleY(-1); }
+  .vp-corner.br{ bottom:32px; right:32px; transform:scale(-1,-1); }
+
+  /* opera mask floating ornament */
+  .floater{
+    position:fixed; z-index:4; pointer-events:none;
+    color:var(--gold);
+    opacity:0.4;
+    animation: drift 14s ease-in-out infinite;
+  }
+  .floater.f1{ top:18%; left:8%; animation-delay:0s; }
+  .floater.f2{ bottom:22%; right:10%; animation-delay:-7s; }
+  @keyframes drift {
+    0%,100%{ transform: translate(0,0) rotate(-3deg); }
+    50%    { transform: translate(8px,-12px) rotate(2deg); }
+  }
+
+  /* footer info strip */
+  .footstrip{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    z-index:6;
+    display:flex; gap:32px; align-items:center;
+    font-family:var(--mono); font-size:10px; letter-spacing:0.32em;
+    text-transform:uppercase; color:var(--paper-mute);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+  }
+  .footstrip .dot{ color:var(--gold-bright); }
+
+  /* opening words — ticker */
+  .latin{
+    margin-top:18px;
+    font-family:var(--display);
+    font-weight:500; font-size:11px; letter-spacing:0.4em;
+    color:var(--gold-bright);
+    text-shadow:0 1px 14px rgba(0,0,0,0.7);
+  }
+
+  /* curtain wipe at end */
+  .curtain{
+    position:fixed; inset:0; z-index:9000; pointer-events:none;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, transparent 30%, var(--ink) 80%);
+    opacity:0; transition:opacity 0.8s ease;
+  }
+  .curtain.show{ opacity:1; }
+</style>
+</head>
+<body>
+  <div class="bg-video-wrap">
+    <video src="assets/hero-night.mp4" autoplay muted loop playsinline></video>
+  </div>
+  <div class="veil"></div>
+  <div class="warm"></div>
+  <div class="grain"></div>
+
+  <!-- Viewport corner fleurons -->
+  <svg class="vp-corner tl" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <path d="M0 1 L40 1" stroke="currentColor" stroke-width="1"/>
+    <path d="M1 0 L1 40" stroke="currentColor" stroke-width="1"/>
+    <path d="M8 8 Q 18 8 18 18" stroke="currentColor" stroke-width="0.7" fill="none"/>
+    <circle cx="22" cy="22" r="1.6" fill="currentColor"/>
+    <path d="M18 18 Q 28 18 28 28" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.7"/>
+  </svg>
+  <svg class="vp-corner tr" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <path d="M0 1 L40 1" stroke="currentColor" stroke-width="1"/>
+    <path d="M1 0 L1 40" stroke="currentColor" stroke-width="1"/>
+    <path d="M8 8 Q 18 8 18 18" stroke="currentColor" stroke-width="0.7" fill="none"/>
+    <circle cx="22" cy="22" r="1.6" fill="currentColor"/>
+  </svg>
+  <svg class="vp-corner bl" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <path d="M0 1 L40 1" stroke="currentColor" stroke-width="1"/>
+    <path d="M1 0 L1 40" stroke="currentColor" stroke-width="1"/>
+    <path d="M8 8 Q 18 8 18 18" stroke="currentColor" stroke-width="0.7" fill="none"/>
+    <circle cx="22" cy="22" r="1.6" fill="currentColor"/>
+  </svg>
+  <svg class="vp-corner br" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <path d="M0 1 L40 1" stroke="currentColor" stroke-width="1"/>
+    <path d="M1 0 L1 40" stroke="currentColor" stroke-width="1"/>
+    <path d="M8 8 Q 18 8 18 18" stroke="currentColor" stroke-width="0.7" fill="none"/>
+    <circle cx="22" cy="22" r="1.6" fill="currentColor"/>
+  </svg>
+
+  <!-- Floating Renaissance/Opera ornaments -->
+  <svg class="floater f1" width="100" height="120" viewBox="0 0 100 120" fill="none" aria-label="Bauta mask">
+    <!-- Bauta mask (Venetian opera) -->
+    <path d="M50 8 Q 88 14 88 60 Q 88 96 70 110 Q 60 116 50 116 Q 40 116 30 110 Q 12 96 12 60 Q 12 14 50 8 Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    <ellipse cx="34" cy="48" rx="8" ry="5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <ellipse cx="66" cy="48" rx="8" ry="5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <circle cx="34" cy="48" r="1.4" fill="currentColor"/>
+    <circle cx="66" cy="48" r="1.4" fill="currentColor"/>
+    <path d="M50 56 L50 72" stroke="currentColor" stroke-width="0.8"/>
+    <path d="M40 80 Q 50 86 60 80" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <path d="M30 22 Q 50 16 70 22" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <circle cx="50" cy="20" r="1.4" fill="currentColor"/>
+  </svg>
+  <svg class="floater f2" width="120" height="120" viewBox="0 0 120 120" fill="none" aria-label="Compass rose">
+    <circle cx="60" cy="60" r="58" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <circle cx="60" cy="60" r="42" stroke="currentColor" stroke-width="0.5" fill="none"/>
+    <path d="M60 4 L64 60 L60 116 L56 60 Z" fill="currentColor" opacity="0.9"/>
+    <path d="M4 60 L60 56 L116 60 L60 64 Z" fill="currentColor" opacity="0.7"/>
+    <path d="M20 20 L60 56 L100 100 L60 64 Z" fill="currentColor" opacity="0.4"/>
+    <circle cx="60" cy="60" r="3" fill="currentColor"/>
+    <text x="60" y="14" text-anchor="middle" font-family="Cinzel, serif" font-size="9" font-weight="600" fill="currentColor" letter-spacing="0.1em">N</text>
+  </svg>
+
+  <!-- Main loading frame -->
+  <div class="stage">
+    <div class="frame">
+      <!-- corner laurel sprigs -->
+      <svg class="corner tl" width="70" height="42" viewBox="0 0 120 54" fill="none">
+        <path d="M5 27 Q 60 27 115 27" stroke="currentColor" stroke-width="0.9" fill="none"/>
+        <path d="M20 27 Q 25 18 32 22 Q 30 28 20 27" fill="currentColor" opacity="0.85"/>
+        <path d="M35 27 Q 40 18 47 22 Q 45 28 35 27" fill="currentColor" opacity="0.85"/>
+        <path d="M50 27 Q 55 18 62 22 Q 60 28 50 27" fill="currentColor" opacity="0.85"/>
+        <path d="M65 27 Q 70 18 77 22 Q 75 28 65 27" fill="currentColor" opacity="0.85"/>
+        <path d="M80 27 Q 85 18 92 22 Q 90 28 80 27" fill="currentColor" opacity="0.85"/>
+        <circle cx="115" cy="27" r="2.2" fill="currentColor"/>
+      </svg>
+      <svg class="corner tr" width="70" height="42" viewBox="0 0 120 54" fill="none">
+        <path d="M5 27 Q 60 27 115 27" stroke="currentColor" stroke-width="0.9" fill="none"/>
+        <path d="M20 27 Q 25 18 32 22 Q 30 28 20 27" fill="currentColor" opacity="0.85"/>
+        <path d="M35 27 Q 40 18 47 22 Q 45 28 35 27" fill="currentColor" opacity="0.85"/>
+        <path d="M50 27 Q 55 18 62 22 Q 60 28 50 27" fill="currentColor" opacity="0.85"/>
+        <path d="M65 27 Q 70 18 77 22 Q 75 28 65 27" fill="currentColor" opacity="0.85"/>
+        <path d="M80 27 Q 85 18 92 22 Q 90 28 80 27" fill="currentColor" opacity="0.85"/>
+        <circle cx="115" cy="27" r="2.2" fill="currentColor"/>
+      </svg>
+
+      <div class="crest">
+        <!-- tiny crescent + ampersand crest -->
+        <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+          <path d="M30 21a9 9 0 1 1-8.5-9 7.4 7.4 0 0 0 8.5 9z" fill="var(--gold-bright)"/>
+        </svg>
+        <div class="name">MUSEO</div>
+        <div class="it">della Notte</div>
+      </div>
+
+      <div class="label" style="margin-bottom:18px;">L'ORA · NOCTIS · MMXXVI</div>
+
+      <div class="della">della</div>
+      <h1 class="roman" id="numeral">I</h1>
+
+      <div class="latin">NOX TEGIT &nbsp;✦&nbsp; LUX REVELAT</div>
+
+      <p class="invocation" id="invocation">
+        Lighting the candles in the Hall of Saints…
+      </p>
+
+      <!-- candle -->
+      <div class="candle-wrap">
+        <div class="glow"></div>
+        <div class="stick">
+          <div class="wick"></div>
+          <div class="flame"></div>
+        </div>
+      </div>
+
+      <!-- progress -->
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="fill"></div>
+          <svg class="progress-fleuron" id="fleuron" width="20" height="20" viewBox="0 0 20 20" fill="none" style="left:0%;">
+            <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="progress-text">
+          <span class="pct" id="pct">000%</span>
+          <span class="stage-name" id="stage">Cannaregio · Calle dei Lampioni 14</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footstrip">
+    <span>OPENING AT DUSK</span>
+    <span class="dot">✦</span>
+    <span>VENEZIA</span>
+    <span class="dot">✦</span>
+    <span>PER ASPERA AD ARTEM</span>
+  </div>
+
+  <div class="curtain" id="curtain"></div>
+
+<script>
+  // Five-act loading — each step bumps the Roman numeral & invocation
+  const acts = [
+    { numeral:'I',   pct:18,  stage:'Lighting the candles…',                 line:'Lighting the candles in the Hall of Saints…' },
+    { numeral:'II',  pct:38,  stage:'Unrolling the velvet…',                 line:'Unrolling the velvet across the Atrio della Luna…' },
+    { numeral:'III', pct:58,  stage:'Tuning the cellos…',                    line:'Tuning the cellos for the evening programme…' },
+    { numeral:'IV',  pct:80,  stage:'Polishing the gilt…',                   line:'Polishing the gilt frames in the Galleria Notturna…' },
+    { numeral:'V',   pct:100, stage:'The doors are open. Buon vespro.',      line:'The doors are open. Buon vespro.' },
+  ];
+
+  const fill   = document.getElementById('fill');
+  const fleur  = document.getElementById('fleuron');
+  const pct    = document.getElementById('pct');
+  const stage  = document.getElementById('stage');
+  const numeral= document.getElementById('numeral');
+  const invo   = document.getElementById('invocation');
+  const curtain= document.getElementById('curtain');
+
+  let i = 0;
+  function step() {
+    const a = acts[i];
+    numeral.textContent = a.numeral;
+    invo.textContent    = a.line;
+    fill.style.width    = a.pct + '%';
+    fleur.style.left    = a.pct + '%';
+    pct.textContent     = String(a.pct).padStart(3,'0') + '%';
+    stage.textContent   = a.stage;
+    i++;
+    if (i < acts.length) {
+      setTimeout(step, 1100);
+    } else {
+      // hold then fade
+      setTimeout(() => {
+        curtain.classList.add('show');
+        // (in a real flow this would redirect)
+        // window.location.href = 'Museo della Notte v4.html';
+      }, 1400);
+    }
+  }
+  // small initial delay so video can start
+  setTimeout(step, 350);
+</script>
+</body>
+</html>
